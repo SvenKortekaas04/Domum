@@ -1,0 +1,65 @@
+{% extends "users/settings/base.html" %}
+{% block heading %}
+    <h3>Admin</h3>
+{% endblock heading %}
+{% block form %}
+    <fieldset {% if not user.is_superuser %}disabled{% endif %}>
+        <h4 class="fw-normal text-{% if user.settings.theme == const.THEME_DARK %}{{ const.THEME_LIGHT }}{% else %}{{ const.THEME_DARK }}{% endif %}">General</h4>
+        <div class="form-floating mb-3">
+            {% if form.house_name.errors %}
+                <input type="text" class="form-control is-invalid" name="{{ form.house_name.name }}" id="{{ form.house_name.id_for_label }}" maxlength="{{ form.house_name.field.max_length }}" placeholder="House name" value="{{ form.house_name.value }}" required>
+                <div class="invalid-feedback">
+                    {{ form.house_name.errors }}
+                </div>
+            {% else %}
+                <input type="text" class="form-control" name="{{ form.house_name.name }}" id="{{ form.house_name.id_for_label }}" maxlength="{{ form.house_name.field.max_length }}" placeholder="House name" value="{{ form.house_name.value }}" required>
+            {% endif %}
+            <label for="{{ form.house_name.id_for_label }}">House name</label>
+        </div>
+        <div class="form-floating mb-3">
+            <select class="form-select" name="{{ form.unit_system.name }}" id="{{ form.unit_system.id_for_label }}">
+                {% for value, name in form.unit_system.field.choices %}
+                    <option value="{{ value }}" {% if value == form.unit_system.value %}selected{% endif %}>{{ name }}</option>
+                {% endfor %}
+            </select>
+            <label for="{{ form.unit_system.id_for_label }}">Unit system</label>
+        </div>
+    </fieldset>
+    <fieldset {% if not user.is_superuser %}disabled{% endif %}>
+        <h4 class="fw-normal text-{% if user.settings.theme == const.THEME_DARK %}{{ const.THEME_LIGHT }}{% else %}{{ const.THEME_DARK }}{% endif %}">Location</h4>
+        <div class="row g-2">
+            <div class="col-md">
+                <div class="form-floating mb-3">
+                    {% if latitude.errors %}
+                        <input type="number" step="any" class="form-control is-invalid" name="{{ form.latitude.name }}" id="{{ form.latitude.id_for_label }}" maxlength="{{ form.latitude.field.max_length }}" placeholder="Latitude" value="{{ form.latitude.value }}" required>
+                        <div class="invalid-feedback">
+                            {{ form.latitude.errors }}
+                        </div>
+                    {% else %}
+                        <input type="number" step="any" class="form-control" name="{{ form.latitude.name }}" id="{{ form.latitude.id_for_label }}" maxlength="{{ form.latitude.field.max_length }}" placeholder="Latitude" value="{{ form.latitude.value }}" required>
+                    {% endif %}
+                    <label for="{{ form.latitude.id_for_label }}">Latitude</label>
+                </div>
+            </div>
+            <div class="col-md">
+                <div class="form-floating mb-3">
+                    {% if longitude.errors %}
+                        <input type="number" step="any" class="form-control is-invalid" name="{{ form.longitude.name }}" id="{{ form.longitude.id_for_label }}" placeholder="Longitude" value="{{ form.longitude.value }}" required>
+                        <div class="invalid-feedback">
+                            {{ form.longitude.errors }}
+                        </div>
+                    {% else %}
+                        <input type="number" step="any" class="form-control" name="{{ form.longitude.name }}" id="{{ form.longitude.id_for_label }}" placeholder="Longitude" value="{{ form.longitude.value }}" required>
+                    {% endif %}
+                    <label for="{{ form.latitude.id_for_label }}">Longitude</label>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+
+    {% if user.is_superuser %}
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary btn-lg">Save Changes</button>
+        </div>
+    {% endif %}
+{% endblock form %}
