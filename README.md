@@ -4,7 +4,7 @@ Home server built with ease and privacy in mind.
 
 ## Built With
 
-* [Bootstrap](https://getbootstrap.com/) - front-end toolkit used.
+* [Bootstrap](https://getbootstrap.com/) - The front-end toolkit used.
 * [Django](https://www.djangoproject.com/) - The web framework used.
 
 ## Versioning
