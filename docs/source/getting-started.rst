@@ -9,27 +9,27 @@ Python Version
 
 It's recommended to use the latest version of Python. Domum supports Python 3.8 and newer.
 
-Download Domum
-^^^^^^^^^^^^^^
+Install Domum
+^^^^^^^^^^^^^
 
 You can get the latest development version from `Github <https://github.com/SvenKortekaas04/domum>`_.
 
-Install requirements
-^^^^^^^^^^^^^^^^^^^^
+Requirements
+^^^^^^^^^^^^
 
-After downloading and unpacking it, you will have to install a few requirements for Domum to run smoothly. You can install all the requirements using::
+After downloading and unpacking Domum, you will have to install a few requirements for it to run smoothly. You can install all the requirements using::
 
 $ pip install -r requirements.txt
 
-Initialize a database
-^^^^^^^^^^^^^^^^^^^^^
+Database
+--------
 
-Domum requires a database to store additional data. To create a new database, run the following command::
+For Domum to work properly, a database must be initialized. To create a new database, run the following command::
 
 $ python manage.py migrate
 
 Demonstration
-^^^^^^^^^^^^^
+-------------
 
 Let's verify that Domum is working. Run the following command::
 
