@@ -17,10 +17,6 @@ from domum.const import (
 )
 
 
-def validate_unit():
-    pass
-
-
 class UnitSystem:
     """
     A holder for units of measurement.
