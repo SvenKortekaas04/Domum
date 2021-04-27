@@ -1,7 +1,10 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 
-from users import models
+from apps.users import models
+
+
+OnboardingForm = forms.modelform_factory(models.AdminSettings, fields=("house_name", "unit_system", "latitude", "longitude",))
 
 # Admin settings
 AdminSettingsForm = forms.modelform_factory(models.AdminSettings, fields=("house_name", "unit_system", "latitude", "longitude",))

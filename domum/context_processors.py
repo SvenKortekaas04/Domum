@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 
 from domum import const
-from users.models import AdminSettings
+from apps.users.models import AdminSettings
 
 
 def domum(request):

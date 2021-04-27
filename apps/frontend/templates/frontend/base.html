@@ -18,14 +18,17 @@
   {% elif user.settings.theme == const.THEME_LIGHT %}
     <body class="bg-white text-dark">
   {% endif %}
-      <nav class="navbar navbar-expand navbar-{{ user.settings.theme }} bg-{{ user.settings.theme }} fixed-top shadow-sm">
+      <nav class="navbar navbar-expand-md navbar-{{ user.settings.theme }} bg-{{ user.settings.theme }} fixed-top shadow-sm">
         <div class="container-fluid">
           <a class="navbar-brand" href="{% url 'frontend_index' %}">{{ house_name }}</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav navbar-nav-scroll w-100 justify-content-end">
+            <ul class="navbar-nav navbar-nav-scroll w-100">
+              <li class="nav-item me-auto">
+                <a class="nav-link" href="{% url 'storage_index' %}">Storage</a>
+              </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   {{ user.last_name }}, {{ user.first_name }}

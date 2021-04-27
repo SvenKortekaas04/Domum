@@ -4,13 +4,14 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from django.shortcuts import redirect, render
 
-from .forms import (
+from apps.users.forms import (
     AdminSettingsForm,
     AppearanceSettingsForm,
+    OnboardingForm,
     UserRegisterForm,
     UserUpdateForm
 )
-from .models import AdminSettings, Settings
+from apps.users.models import AdminSettings, Settings
 
 
 @login_required
@@ -78,7 +79,7 @@ def onboarding(request):
     """
 
     if request.method == "POST":
-        form = AdminSettingsForm(request.POST)
+        form = OnboardingForm(request.POST)
         if form.is_valid():
             # Save changes
             admin_settings = AdminSettings.objects.get(user=request.user)
@@ -96,7 +97,7 @@ def onboarding(request):
 
         # Retrieve user settings
         admin_settings = AdminSettings.objects.get(user=superuser)
-        form = AdminSettingsForm(instance=admin_settings)
+        form = OnboardingForm(instance=admin_settings)
     return render(request, "users/onboarding.html", {"form": form})
 
 
