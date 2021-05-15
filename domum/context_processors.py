@@ -1,19 +1,12 @@
-from django.contrib.auth import get_user_model
+from typing import (
+    Any,
+    Dict
+)
 
 from domum import const
-from apps.users.models import AdminSettings
 
 
-def domum(request):
-    context = {}
-
-    # Get superuser
-    User = get_user_model()
-    superuser = User.objects.filter(is_superuser=True)
-    if superuser:
-        admin_settings = AdminSettings.objects.get(user=superuser.first())
-
+def main(request) -> Dict[str, Any]:
     return {
-        "house_name": admin_settings.house_name if superuser else const.NAME,
         "const": const
     }

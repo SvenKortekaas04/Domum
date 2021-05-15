@@ -14,40 +14,9 @@ NAME = "Domum"
 THEME_DARK = "dark"
 THEME_LIGHT = "light"
 
-# System of measurement
-UNIT_SYSTEM = "unit_system"
-UNIT_SYSTEM_IMPERIAL = "imperial"
-UNIT_SYSTEM_METRIC = "metric"
-
-# Degree unit
-DEGREE = "°"
- 
-# Temperature units
-TEMPERATURE_CELSIUS = f"{DEGREE}C"
-TEMPERATURE_FAHRENHEIT = F"{DEGREE}F"
-TEMPERATURE_KELVIN = F"{DEGREE}K"
-
-# Length units
-LENGTH = "length"
-LENGTH_INCHES = "in"
-LENGTH_FEET = "ft"
-LENGTH_YARDS = "yd"
-LENGTH_MILES = "mi"
-
-LENGTH_MILLIMETERS = "mm"
-LENGTH_CENTIMETERS = "cm"
-LENGTH_METERS = "m"
-LENGTH_KILOMETERS = "km"
-
-# Mass units
-MASS = "mass"
-MASS_OUNCE = "oz"
-MASS_POUNDS = "lb"
-
-MASS_GRAMS = "g"
-
-# Volume units
-VOLUME = "volume"
-VOLUME_GALLONS = "gal"
-
-VOLUME_LITERS = "L"
+# Data units
+DATA_BYTES = "B"
+DATA_KILOBYTES = "kB"
+DATA_MEGABYTES = "MB"
+DATA_GIGABYTES = "GB"
+DATA_TERABYTES = "TB"
