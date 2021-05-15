@@ -9,10 +9,6 @@ urlpatterns = [
     path("login/", LoginView.as_view(template_name="users/login.html"), name="users_login"),
     path("logout/", views.logout, name="users_logout"),
     path("register/", views.register, name="users_register"),
-    path("onboarding/", views.onboarding, name="users_onboarding"),
-
-    # Admin settings
-    path("settings/admin/", views.settings_admin, name="users_settings_admin"),
 
     # User settings
     path("settings/account/", views.settings_account, name="users_settings_account"),

@@ -3,14 +3,11 @@ from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
-import pytz
 
 from domum.const import (
     NAME,
     THEME_DARK,
-    THEME_LIGHT,
-    UNIT_SYSTEM_IMPERIAL,
-    UNIT_SYSTEM_METRIC
+    THEME_LIGHT
 )
 
 
@@ -93,25 +90,22 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
+    storage_path = models.CharField(
+        unique=True,
+        max_length=32,
+        blank=False,
+    )
+    storage_id = models.CharField(
+        unique=True,
+        max_length=4,
+        blank=False,
+    )
+
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = [
         'first_name',
         'last_name'
     ]
-
-
-class AdminSettings(models.Model):
-    """Admin settings."""
-
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="admin_settings", blank=True)
-
-    # General
-    house_name = models.CharField(max_length=16, default=NAME)
-    unit_system = models.CharField(max_length=8, choices=[(unit_system, unit_system.capitalize()) for unit_system in (UNIT_SYSTEM_IMPERIAL, UNIT_SYSTEM_METRIC)], default=UNIT_SYSTEM_METRIC)
-
-    # Location
-    latitude = models.FloatField(null=True)
-    longitude = models.FloatField(null=True)
 
 
 class Settings(models.Model):
