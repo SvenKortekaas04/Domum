@@ -1,0 +1,38 @@
+{% extends "users/base.html" %}
+
+{% block heading %}
+    <h1 class="mb-5 fw-normal text-center">Login</h1>
+{% endblock heading %}
+
+{% block form %}
+    <div class="form-floating mb-3">
+        {% if form.username.errors %}
+            <input type="text" class="form-control is-invalid" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}" maxlength="{{ form.username.field.max_length }}" placeholder="name@example.com" required>
+            <div class="invalid-feedback">
+                {{ form.username.errors }}
+            </div>
+        {% else %}
+            <input type="text" class="form-control" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}" maxlength="{{ form.username.field.max_length }}" placeholder="name@example.com" required>
+        {% endif %}
+        <label for="{{ form.username.id_for_label }}">Email address</label>
+    </div>
+    <div class="form-floating mb-3">
+        {% if form.password.errors %}
+            <input type="password" class="form-control is-invalid" name="{{ form.password.name }}" id="{{ form.password.id_for_label }}" maxlength="{{ form.password.field.max_length }}" placeholder="Password" required>
+            <div class="invalid-feedback">
+                {{ form.password.errors }}
+            </div>
+        {% else %}
+            <input type="password" class="form-control" name="{{ form.password.name }}" id="{{ form.password.id_for_label }}" maxlength="{{ form.password.field.max_length }}" placeholder="Password" required>
+        {% endif %}
+        <label for="{{ form.password.id_for_label }}">Password</label>
+    </div>
+{% endblock form %}
+
+{% block footer %}
+    <div class="border-top mt-3 text-center">
+        <small class="text-muted">
+            Don't have an account? <a class="text-decoration-none" href="{% url 'users_register' %}">Register</a>
+        </small>
+    </div>
+{% endblock footer %}

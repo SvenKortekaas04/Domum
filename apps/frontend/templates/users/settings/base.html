@@ -1,0 +1,29 @@
+{% extends "core/base.html" %}
+{% block content %}
+    <div class="row">
+        <div class="col-lg-3 col-md-4 col-12">
+            <div class="mb-3">
+                <h5>Account settings</h5>
+                <div class="list-group">
+                    <a href="{% url 'users_settings_account' %}" class="list-group-item list-group-item-action">Account</a>
+                    <a href="{% url 'users_settings_appearance' %}" class="list-group-item list-group-item-action">Appearance</a>
+                    <a href="{% url 'users_settings_security' %}" class="list-group-item list-group-item-action">Security</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9 col-md-8 col-12">
+            {% block heading %}{% endblock heading %}
+            <form method="POST" class="text-dark">
+                {% csrf_token %}
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                {% block form %}{% endblock form %}
+            </form>
+        </div>
+    </div>
+{% endblock content %}

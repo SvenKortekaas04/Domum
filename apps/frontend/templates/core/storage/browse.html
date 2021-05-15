@@ -1,0 +1,59 @@
+{% extends "core/storage/base.html" %}
+{% block storage_content %}
+    <div class="d-flex mb-2 border-bottom">
+        <h3 class="me-auto">Overview</h3>
+        <div class="dropdown dropstart">
+            <button class="btn btn-sm border" type="button" id="dropdownMenuStorage" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-three-dots"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuStorage">
+                <li><h6 class="dropdown-header">New</h6></li>
+                <li><a class="dropdown-item" href="#">File</a></li>
+                <li><a class="dropdown-item" href="#">Folder</a></li>
+                <li><a class="dropdown-item" href="#">Shared folder</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><h6 class="dropdown-header">Upload</h6></li>
+                <li><a class="dropdown-item" href="#">File</a></li>
+                <li><a class="dropdown-item" href="#">Folder</a></li>
+            </ul>
+        </div>
+    </div>
+    <table class="table table-bordered table-hover align-middle">
+        <thead>
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col" class="d-sm-table-cell d-none">Modified</th>
+                <th scope="col" class="d-md-table-cell d-none">Size</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for subdir in subdirs %}
+                <tr>
+                    <td>
+                        <a href="{% url 'core_browse' path=subdir.relative_path %}" class="text-dark text-decoration-none">
+                            <i class="bi bi-folder-fill text-primary me-1"></i>
+                            <span>{{ subdir.name }}</span>
+                        </a>
+                    </td>
+                    <td class="d-sm-table-cell d-none">{{ subdir.last_modified_date }}</td>
+                    <td class="d-md-table-cell d-none">{{ subdir.listdir|length }} items</td>
+                </tr>
+            {% endfor %}
+            {% for file in files %}
+                <tr>
+                    <td>
+                        <a href="#" class="text-dark text-decoration-none">
+                            <i class="bi bi-file-earmark me-1"></i>
+                            <span class="text-truncate">{{ file.name }}</span>
+                        </a>
+                    </td>
+                    <td class="d-sm-table-cell d-none">{{ file.last_modified_date }}</td>
+                    <td class="d-md-table-cell d-none">{{ file.size }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if not subdirs and not files %}
+        <p class="text-center my-5">This folder is empty.</p>
+    {% endif %}
+{% endblock storage_content %}
