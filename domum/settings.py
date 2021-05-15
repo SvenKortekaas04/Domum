@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'apps.users'
 ]
 
-LOGIN_REDIRECT_URL = 'frontend_index'
+LOGIN_REDIRECT_URL = 'core_index'
 LOGIN_URL = '/login/'
 
 MIDDLEWARE = [
