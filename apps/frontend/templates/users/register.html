@@ -71,9 +71,7 @@
 {% endblock form %}
 
 {% block footer %}
-    <div class="border-top mt-3 text-center">
-        <small class="text-muted">
-            Already have an account? <a class="text-decoration-none" href="{% url 'users_login' %}">Login</a>
-        </small>
-    </div>
+    <small class="text-muted">
+        Already have an account? <a class="text-decoration-none" href="{% url 'users_login' %}">Login</a>
+    </small>
 {% endblock footer %}
