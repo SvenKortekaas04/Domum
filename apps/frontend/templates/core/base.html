@@ -1,7 +1,14 @@
 {% load static %}
+{% load tags %}
 
 {% url 'core_browse' as browse %}
+{% active request browse as active_browse %}
+
 {% url 'core_recent' as recent %}
+{% active request recent as active_recent %}
+
+{% url 'core_start' as start %}
+{% active request start as active_start %}
 
 <!doctype html>
 <html lang="en">
@@ -11,10 +18,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 
     <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'frontend/css/style.css' %}">
@@ -22,63 +29,89 @@
     <title>{{ const.NAME }}</title>
   </head>
   <body>
+    <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+      <div class="container-fluid py-md-0 py-1">
+        <button class="navbar-toggler border-0 d-block" type="button" data-bs-toggle="offcanvas" data-bs-target="#navbarOffcanvas" aria-controls="navbarOffcanvas">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <nav class="navbar navbar-expand-md navbar-light bg-white fixed-top shadow-sm">
-      <div class="container-lg">
-        <a class="navbar-brand d-md-block d-none" href="{% url 'core_index' %}">{{ const.NAME }}</a>
+        <button class="navbar-toggler border-0 d-md-none d-block ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+          <i class="bi bi-search"></i>
+        </button>
 
         <div class="dropdown order-md-2">
-          <a class="text-dark text-decoration-none dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-            {{ user.last_name }}, {{ user.first_name }}
-          </a>
-          <ul class="dropdown-menu dropdown-menu-md-end dropdown-menu-light" aria-labelledby="navbarDropdown">
-            <li>
-              <span class="dropdown-header lh-1">
-                <h6 class="m-0">{{ user.first_name }} {{ user.last_name }}</h6>
-                <small class="m-0">{{ user.email }}</small>
-              </span>
-            </li>
-            <li><hr class="dropdown-divider"></li>
+          <button class="navbar-toggler border-0 d-block" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-person-circle"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
             <li>
               <a class="dropdown-item" href="#">
-                <i class="bi bi-bell"></i>
                 Notifications
               </a>
             </li>
             <li>
               <a class="dropdown-item" href="{% url 'users_settings_account' %}">
-                <i class="bi bi-gear"></i>
                 Settings
               </a>
             </li>
             <li><hr class="dropdown-divider"></li>
             <li>
               <a class="dropdown-item" href="{% url 'users_logout' %}">
-                <i class="bi bi-box-arrow-right"></i>
                 Logout
               </a>
             </li>
           </ul>
         </div>
-        <button class="navbar-toggler border-0 d-md-none d-block" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-          <i class="bi bi-search"></i>
-        </button>
-        <div class="collapse navbar-collapse order-md-1 justify-content-center" id="navbarCollapse">
-          <form class="mt-md-0 mt-2 flex-grow-1 px-md-5">
+
+        <div class="collapse navbar-collapse justify-content-start ms-md-2 order-md-1" id="navbarCollapse">
+          <form class="mt-md-0 mt-2">
             <input class="form-control" type="search" placeholder="Search" aria-label="Search">
           </form>
         </div>
       </div>
     </nav>
 
-    <div class="container-lg mt-md-3 mb-5">
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="navbarOffcanvas" aria-labelledby="navbarOffcanvasLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="navbarOffcanvasLabel">{{ const.NAME }}</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <ul class="nav nav-pills flex-column">
+          <li class="nav-item">
+            <a class="nav-link {{ active_start }} {% if not active_start %}text-dark{% endif %}" href="{% url 'core_start' %}">
+              <i class="bi bi-house me-1"></i>
+              <span class="d-inline-block">Start</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {{ active_recent }} {% if not active_recent %}text-dark{% endif %}" href="{% url 'core_recent' %}">
+              <i class="bi bi-clock me-1"></i>
+              <span class="d-inline-block">Recent</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {{ active_browse }} {% if not active_browse %}text-dark{% endif %}" href="{% url 'core_browse' %}">
+              <i class="bi bi-folder me-1"></i>
+              <span class="d-inline-block">Browse</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-dark" href="#">
+              <i class="bi bi-share-fill me-1"></i>
+              <span class="d-inline-block">Shared</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="container mt-3">
       {% block content %}{% endblock content %}
     </div>
 
-    {% block footer %}{% endblock footer %}
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 
     <!-- Custom JS -->
     <script src="{% static 'frontend/js/index.js' %}"></script>
