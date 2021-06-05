@@ -1,21 +1,28 @@
 {% extends "core/storage/base.html" %}
 {% block storage_content %}
-    <div class="d-flex mb-2 border-bottom">
-        <h3 class="me-auto">Overview</h3>
-        <div class="dropdown dropstart">
-            <button class="btn btn-sm border" type="button" id="dropdownMenuStorage" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-three-dots"></i>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-light" aria-labelledby="dropdownMenuStorage">
-                <li><h6 class="dropdown-header">New</h6></li>
-                <li><a class="dropdown-item" href="#">File</a></li>
-                <li><a class="dropdown-item" href="#">Folder</a></li>
-                <li><a class="dropdown-item" href="#">Shared folder</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><h6 class="dropdown-header">Upload</h6></li>
-                <li><a class="dropdown-item" href="#">File</a></li>
-                <li><a class="dropdown-item" href="#">Folder</a></li>
-            </ul>
+    <div class="d-flex justify-content-between mb-2 border-bottom">
+        <h3>Overview</h3>
+        <div class="d-flex">
+            <div class="dropdown me-1">
+                <button class="btn btn-sm btn-primary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-plus"></i> New
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+            </div>
+            <div class="dropdown">
+                <button class="btn btn-sm border dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-upload"></i> Upload
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+            </div>
         </div>
     </div>
     <table class="table table-bordered table-hover align-middle">
