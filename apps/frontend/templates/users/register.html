@@ -6,6 +6,17 @@
 
 {% block form %}
     <div class="row gx-md-2">
+        <div class="form-floating mb-3">
+            {% if form.username.errors %}
+                <input type="text" class="form-control is-invalid" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}" maxlength="{{ form.username.field.max_length }}" placeholder="Username" required>
+                <div class="invalid-feedback">
+                    {{ form.username.errors }}
+                </div>
+            {% else %}
+                <input type="text" class="form-control" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}" maxlength="{{ form.username.field.max_length }}" placeholder="Username" required>
+            {% endif %}
+            <label for="{{ form.username.id_for_label }}">Username</label>
+        </div>
         <div class="col-md">
             <div class="form-floating mb-3">
                 {% if form.first_name.errors %}
