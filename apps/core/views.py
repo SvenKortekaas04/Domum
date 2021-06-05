@@ -1,7 +1,7 @@
 import os
 
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 from apps.core.util.storage import (
     get_files,
@@ -27,3 +27,8 @@ def browse(request, path: str = None):
 @login_required
 def recent(request):
     return render(request, "core/storage/recent.html")
+
+
+@login_required
+def start(request):
+    return render(request, "core/start.html")
