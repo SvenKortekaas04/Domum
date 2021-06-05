@@ -2,59 +2,18 @@
 {% load tags %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-md-3 col-12 d-md-block d-none">
-            <nav class="nav nav-pills nav-fill flex-column">
-                <a class="nav-link {% active request recent %}" href="{% url 'core_recent' %}">
-                    <i class="bi bi-clock me-1"></i>
-                    <span class="d-inline-block">Recent</span>
-                </a>
-                <a class="nav-link {% active request browse %}" href="{% url 'core_browse' %}">
-                    <i class="bi bi-folder me-1"></i>
-                    <span class="d-inline-block">Browse</span>
-                </a>
-                <a class="nav-link" href="#">
-                    <i class="bi bi-share-fill me-1"></i>
-                    <span class="d-inline-block">Shared</span>
-                </a>
-            </nav>
-        </div>
-        <div class="col-md-9 col-12">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    {% for pair in breadcrumb %}
-                        {% if forloop.last %}
-                            <li class="breadcrumb-item fs-5 active" aria-current="page">{% if pair.1 == user.storage_id %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ pair.1 }}{% endif %}</li>
-                        {% else %}
-                            <li class="breadcrumb-item fs-5"><a class="text-decoration-none text-dark" href="{% url 'core_browse' path=pair.0 %}">{% if pair.1 == user.storage_id %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ pair.1 }}{% endif %}</a></li>
-                        {% endif %}
-                    {% endfor %}
-                </ol>
-            </nav>
-            {% block storage_content %}{% endblock storage_content %}
-        </div>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            {% for pair in breadcrumb %}
+                {% if forloop.last %}
+                    <li class="breadcrumb-item fs-5 active" aria-current="page">{% if pair.1 == user.storage_id %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ pair.1 }}{% endif %}</li>
+                {% else %}
+                    <li class="breadcrumb-item fs-5"><a class="text-decoration-none text-dark" href="{% url 'core_browse' path=pair.0 %}">{% if pair.1 == user.storage_id %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ pair.1 }}{% endif %}</a></li>
+                {% endif %}
+            {% endfor %}
+        </ol>
+    </nav>
+    <div>
+        {% block storage_content %}{% endblock storage_content %}
     </div>
 {% endblock content %}
-{% block footer %}
-    <footer class="fixed-bottom bg-light d-md-none d-block py-1">
-        <div class="container-fluid">
-        <ul class="nav nav-pills nav-fill">
-            <li class="nav-item">
-                <a class="nav-link {% active request recent %}" href="{% url 'core_recent' %}">
-                    <i class="bi bi-clock"></i>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {% active request browse %}" href="{% url 'core_browse' %}">
-                    <i class="bi bi-folder"></i>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">
-                    <i class="bi bi-share-fill"></i>
-                </a>
-            </li>
-        </ul>
-        </div>
-    </footer>
-{% endblock footer %}
