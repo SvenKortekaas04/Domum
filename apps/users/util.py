@@ -31,13 +31,13 @@ def init_user_storage() -> Tuple[str]:
     return storage_path, storage_id
 
 
-def init_user(first_name: str, last_name: str, email: str, password: str) -> User:
+def init_user(username: str, first_name: str, last_name: str, email: str, password: str) -> User:
     """Initialize a new user."""
 
     # Initialize storage
     storage_path, storage_id = init_user_storage()
 
-    user = User.objects.create_user(first_name=first_name, last_name=last_name, email=email, password=password, storage_path=storage_path, storage_id=storage_id)
+    user = User.objects.create_user(username=username, first_name=first_name, last_name=last_name, email=email, password=password, storage_path=storage_path, storage_id=storage_id)
 
     # Assign user specific settings
     settings = Settings.objects.create(user=user)

@@ -36,13 +36,14 @@ def register(request):
     if request.method == "POST":
         form = UserRegisterForm(request.POST)
         if form.is_valid():
+            username = form.cleaned_data["username"]
             first_name = form.cleaned_data["first_name"]
             last_name = form.cleaned_data["last_name"]
             email = form.cleaned_data["email"]
             password = form.cleaned_data["password1"]
 
             # Create a new user
-            user = init_user(first_name=first_name, last_name=last_name, email=email, password=password)
+            user = init_user(username=username, first_name=first_name, last_name=last_name, email=email, password=password)
 
             # Flash a message stating that an account has 
             # been created and redirect the user to the login page
