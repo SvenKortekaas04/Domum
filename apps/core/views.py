@@ -12,6 +12,10 @@ from apps.core.util.storage import (
 
 @login_required
 def browse(request, path: str = None):
+    """
+    Browse through all files and folders.
+    """
+
     # Compose a path
     path = os.path.join(request.user.storage_path, os.path.normcase(path)) if path else request.user.storage_path
 
@@ -26,9 +30,17 @@ def browse(request, path: str = None):
 
 @login_required
 def recent(request):
+    """
+    Render recently opened files and folders.
+    """
+
     return render(request, "core/storage/recent.html")
 
 
 @login_required
 def start(request):
+    """
+    Render the start page.
+    """
+
     return render(request, "core/start.html")

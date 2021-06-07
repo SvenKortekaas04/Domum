@@ -14,13 +14,6 @@ from apps.users.util import init_user
 
 
 @login_required
-def account(request):
-    """Render a the account page of a user."""
-
-    return render(request, "users/account.html")
-
-
-@login_required
 def logout(request):
     """Log a user out."""
 
