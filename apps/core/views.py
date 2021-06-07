@@ -34,7 +34,7 @@ def recent(request):
     Render recently opened files and folders.
     """
 
-    return render(request, "core/storage/recent.html")
+    return render(request, "core/recent.html")
 
 
 @login_required
