@@ -1,9 +1,16 @@
 {% extends "users/settings/base.html" %}
-{% block heading %}
+{% block settings %}
     <h3>Appearance</h3>
-{% endblock heading %}
-{% block form %}
-    <fieldset>
+
+    <form method="POST" class="text-dark">
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+                {% for error in form.non_field_errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        {% endif %}
         <div class="form-floating mb-3">
             <select class="form-select" name="{{ form.theme.name }}" id="{{ form.theme.id_for_label }}">
                 {% for value, name in form.theme.field.choices %}
@@ -12,9 +19,9 @@
             </select>
             <label for="{{ form.theme.id_for_label }}">Theme</label>
         </div>
-    </fieldset>
 
-    <div class="d-grid gap-2">
-        <button type="submit" class="btn btn-primary btn-lg">Save Changes</button>
-    </div>
-{% endblock form %}
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary btn-lg">Save Changes</button>
+        </div>
+    </form>
+{% endblock settings %}

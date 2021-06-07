@@ -1,9 +1,16 @@
 {% extends "users/settings/base.html" %}
-{% block heading %}
+{% block settings %}
     <h3>Security</h3>
-{% endblock heading %}
-{% block form %}
-    <fieldset>
+
+    <form method="POST" class="text-dark">
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger" role="alert">
+                {% for error in form.non_field_errors %}
+                    {{ error }}
+                {% endfor %}
+            </div>
+        {% endif %}
         <div class="form-floating mb-3">
             {% if form.old_password.errors %}
                 <input type="password" class="form-control is-invalid" name="{{ form.old_password.name }}" id="{{ form.old_password.id_for_label }}" maxlength="{{ form.old_password.field.max_length }}" placeholder="Password" required>
@@ -40,9 +47,9 @@
             <label for="{{ form.new_password2.id_for_label }}">New password confirmation</label>
             <small class="text-muted">{{ form.new_password2.field.help_text }}</small>
         </div>
-    </fieldset>
 
-    <div class="d-grid gap-2">
-        <button type="submit" class="btn btn-primary btn-lg">Update password</button>
-    </div>
-{% endblock form %}
+        <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary btn-lg">Update password</button>
+        </div>
+    </form>
+{% endblock settings %}
