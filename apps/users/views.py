@@ -1,5 +1,5 @@
 from django.contrib.auth import logout as auth_logout, get_user_model
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
 from django.shortcuts import redirect, render
@@ -10,7 +10,7 @@ from apps.users.forms import (
     UserUpdateForm
 )
 from apps.users.models import Settings
-from apps.users.util import init_user
+from apps.users.util import init_user, delete_user
 
 
 @login_required
@@ -49,6 +49,22 @@ def register(request):
 
 
 @login_required
+def account(request):
+    """Show a user's account."""
+
+    return render(request, "users/account.html")
+
+
+@login_required
+def delete_account(request):
+    """Delete an account."""
+
+    delete_user(username=request.user.username)  # Delete a user
+
+    return redirect("users_login")
+
+
+@login_required
 def settings_account(request):
     """Render user account settings."""
 
@@ -60,7 +76,7 @@ def settings_account(request):
             # Flash a message stating that the user's account has 
             # been updated and redirect the user to the settings page
             messages.success(request, "Your account has been updated.")
-            return redirect("settings_account")
+            return redirect("users_settings_account")
     else:
         form = UserUpdateForm(instance=request.user)
     return render(request, "users/settings/account.html", {"form": form})
@@ -80,6 +96,11 @@ def settings_appearance(request):
                 setattr(settings, key, value)
 
             settings.save()
+
+            # Flash a message stating that the user's account has 
+            # been updated and redirect the user to the settings page
+            messages.success(request, "Your account has been updated.")
+            return redirect("users_settings_appearance")
     else:
         # Retrieve user settings
         settings = Settings.objects.get(user=request.user)
@@ -96,7 +117,10 @@ def settings_security(request):
         if form.is_valid():
             form.save()
             
-            return redirect("settings_account")
+            # Flash a message stating that the user's account has 
+            # been updated and redirect the user to the settings page
+            messages.success(request, "Your account has been updated.")
+            return redirect("users_settings_account")
     else:
         form = PasswordChangeForm(request.user)
     return render(request, "users/settings/security.html", {"form": form})
