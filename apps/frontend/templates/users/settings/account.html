@@ -15,6 +15,18 @@
                 {% endfor %}
             </div>
         {% endif %}
+
+        <div class="form-floating mb-3">
+            {% if form.username.errors %}
+                <input type="text" class="form-control is-invalid" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}" maxlength="{{ form.username.field.max_length }}" placeholder="name@example.com" value="{{ form.username.value }}" required>
+                <div class="invalid-feedback">
+                    {{ form.username.errors }}
+                </div>
+            {% else %}
+                <input type="text" class="form-control" name="{{ form.username.name }}" id="{{ form.username.id_for_label }}" maxlength="{{ form.username.field.max_length }}" placeholder="name@example.com" value="{{ form.username.value }}" required>
+            {% endif %}
+            <label for="{{ form.username.id_for_label }}">Username</label>
+        </div>
         <div class="row g-md-2">
             <div class="col-md">
                 <div class="form-floating mb-3">
@@ -63,6 +75,6 @@
     <h4 class="pb-2 border-bottom">Delete account</h4>
     <p>Once you delete your account, there is no going back. Please be certain.</p>
     <div class="d-grid gap-2">
-        <button type="button" class="btn btn-outline-secondary btn-lg" onclick="makeRequest(url='{{ api_users_user }}', method='DELETE').then(document.location.href = '{{ users_login }}');">Delete account</button>
+        <a class="btn btn-outline-secondary btn-lg" href="{% url 'users_account_delete' %}" role="button">Delete account</a>
     </div>
 {% endblock settings %}
