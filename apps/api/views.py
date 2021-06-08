@@ -1,12 +1,11 @@
-import shutil
-
+from django.contrib.auth import get_user_model
 from django.http import Http404
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.views import APIView
 
 from apps.api.serializers import UserSerializer
-from apps.users.models import User
+from apps.users.util import delete_user
 
 
 class UsersView(APIView):
@@ -15,6 +14,7 @@ class UsersView(APIView):
     """
 
     def get(self, request):
+        User = get_user_model()
         users = User.objects.all()
         serializer = UserSerializer(users, many=True)
 
@@ -28,6 +28,7 @@ class UserView(APIView):
 
     def get_object(self, username):
         try:
+            User = get_user_model()
             return User.objects.get(username=username)
         except User.DoesNotExist:
             raise Http404
@@ -38,11 +39,7 @@ class UserView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def delete(self, request, username):
-        user = self.get_object(username)
-        user.delete()
-
-        # Delete storage
-        shutil.rmtree(user.storage_path)
+        delete_user(username=username)  # Delete a user
 
         return Response(status=status.HTTP_204_NO_CONTENT)
 
