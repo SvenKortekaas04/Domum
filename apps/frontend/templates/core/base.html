@@ -7,9 +7,6 @@
 {% url 'core_recent' as recent %}
 {% active request recent as active_recent %}
 
-{% url 'core_start' as start %}
-{% active request start as active_start %}
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -45,6 +42,11 @@
           </button>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
             <li>
+              <a class="dropdown-item" href="{% url 'users_account' %}">
+                Account
+              </a>
+            </li>
+            <li>
               <a class="dropdown-item" href="#">
                 Notifications
               </a>
@@ -78,12 +80,6 @@
       </div>
       <div class="offcanvas-body">
         <ul class="nav nav-pills flex-column">
-          <li class="nav-item">
-            <a class="nav-link {{ active_start }} {% if not active_start %}text-dark{% endif %}" href="{% url 'core_start' %}">
-              <i class="bi bi-house me-1"></i>
-              <span class="d-inline-block">Start</span>
-            </a>
-          </li>
           <li class="nav-item">
             <a class="nav-link {{ active_recent }} {% if not active_recent %}text-dark{% endif %}" href="{% url 'core_recent' %}">
               <i class="bi bi-clock me-1"></i>

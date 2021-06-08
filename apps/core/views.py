@@ -35,12 +35,3 @@ def recent(request):
     """
 
     return render(request, "core/recent.html")
-
-
-@login_required
-def start(request):
-    """
-    Render the start page.
-    """
-
-    return render(request, "core/start.html")
