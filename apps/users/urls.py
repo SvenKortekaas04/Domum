@@ -5,6 +5,9 @@ from apps.users import views
 
 
 urlpatterns = [
+    path("account/", views.account, name="users_account"),
+    path("account/delete", views.delete_account, name="users_account_delete"),
+
     path("login/", LoginView.as_view(template_name="users/login.html"), name="users_login"),
     path("logout/", views.logout, name="users_logout"),
     path("register/", views.register, name="users_register"),
