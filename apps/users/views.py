@@ -1,8 +1,12 @@
-from django.contrib.auth import logout as auth_logout, get_user_model
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
+from django.contrib.auth import logout as auth_logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.forms import PasswordChangeForm
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
+from django.views.generic.edit import FormView
 
 from apps.users.forms import (
     AppearanceSettingsForm,
@@ -23,36 +27,30 @@ def logout(request):
     return redirect("users_login")
 
 
-def register(request):
-    """Register a user."""
+class RegisterView(FormView):
+    """
+    Register a user.
+    """
 
-    if request.method == "POST":
-        form = UserRegisterForm(request.POST)
-        if form.is_valid():
-            username = form.cleaned_data["username"]
-            first_name = form.cleaned_data["first_name"]
-            last_name = form.cleaned_data["last_name"]
-            email = form.cleaned_data["email"]
-            password = form.cleaned_data["password1"]
+    template_name = "users/register.html"
+    form_class = UserRegisterForm
+    success_url = reverse_lazy("users_login")
 
-            # Create a new user
-            user = init_user(username=username, first_name=first_name, last_name=last_name, email=email, password=password)
+    def form_valid(self, form):
+        username = form.cleaned_data["username"]
+        first_name = form.cleaned_data["first_name"]
+        last_name = form.cleaned_data["last_name"]
+        email = form.cleaned_data["email"]
+        password = form.cleaned_data["password1"]
 
-            # Flash a message stating that an account has 
-            # been created and redirect the user to the login page
-            messages.success(request, "Your account has been created.")
+        # Create a new user
+        init_user(username=username, first_name=first_name, last_name=last_name, email=email, password=password)
 
-            return redirect("users_login")
-    else:
-        form = UserRegisterForm()
-    return render(request, "users/register.html", {"form": form})
+        # Flash a message stating that an account has 
+        # been created and redirect the user to the login page
+        messages.success(self.request, "Your account has been created.")
 
-
-@login_required
-def account(request):
-    """Show a user's account."""
-
-    return render(request, "users/account.html")
+        return super().form_valid(form)
 
 
 @login_required
@@ -64,30 +62,58 @@ def delete_account(request):
     return redirect("users_login")
 
 
-@login_required
-def settings_account(request):
-    """Render user account settings."""
+class AccountSettingsView(LoginRequiredMixin, FormView):
+    """
+    Render user account settings.
+    """
 
-    if request.method == "POST":
-        form = UserUpdateForm(request.POST, instance=request.user)
+    template_name = "users/settings/account.html"
+    form_class = UserUpdateForm
+    success_url = reverse_lazy("users_settings_account")
+
+    def get(self, request) -> HttpResponse:
+        form = self.form_class(instance=request.user)
+
+        # Get context data
+        context = self.get_context_data(form=form)
+
+        return render(request, self.template_name, context)
+
+    def post(self, request) -> HttpResponse:
+        form = self.form_class(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
             
             # Flash a message stating that the user's account has 
             # been updated and redirect the user to the settings page
-            messages.success(request, "Your account has been updated.")
-            return redirect("users_settings_account")
-    else:
-        form = UserUpdateForm(instance=request.user)
-    return render(request, "users/settings/account.html", {"form": form})
+            messages.success(self.request, "Your account has been updated.")
+
+            return super().form_valid(form)
+        else:
+            return super().form_invalid(form)
 
 
-@login_required
-def settings_appearance(request):
-    """Render user appearance settings."""
+class AppearanceSettingsView(LoginRequiredMixin, FormView):
+    """
+    Render user appearance settings.
+    """
 
-    if request.method == "POST":
-        form = AppearanceSettingsForm(request.POST)
+    template_name = "users/settings/appearance.html"
+    form_class = AppearanceSettingsForm
+    success_url = reverse_lazy("users_settings_account")
+
+    def get(self, request) -> HttpResponse:
+        # Retrieve user settings
+        settings = Settings.objects.get(user=request.user)
+        form = self.form_class(instance=settings)
+
+        # Get context data
+        context = self.get_context_data(form=form)
+
+        return render(request, self.template_name, context)
+
+    def post(self, request) -> HttpResponse:
+        form = self.form_class(request.POST)
         if form.is_valid():
             # Save changes
             settings = Settings.objects.get(user=request.user)
@@ -96,31 +122,42 @@ def settings_appearance(request):
                 setattr(settings, key, value)
 
             settings.save()
-
+            
             # Flash a message stating that the user's account has 
             # been updated and redirect the user to the settings page
-            messages.success(request, "Your account has been updated.")
-            return redirect("users_settings_appearance")
-    else:
-        # Retrieve user settings
-        settings = Settings.objects.get(user=request.user)
-        form = AppearanceSettingsForm(instance=settings)
-    return render(request, "users/settings/appearance.html", {"form": form})
+            messages.success(self.request, "Your account has been updated.")
+
+            return super().form_valid(form)
+        else:
+            return super().form_invalid(form)
 
 
-@login_required
-def settings_security(request):
-    """Render user security settings."""
+class SecuritySettingsView(LoginRequiredMixin, FormView):
+    """
+    Render user security settings.
+    """
 
-    if request.method == "POST":
-        form = PasswordChangeForm(request.user, request.POST)
+    template_name = "users/settings/security.html"
+    form_class = PasswordChangeForm
+    success_url = reverse_lazy("users_settings_account")
+
+    def get(self, request) -> HttpResponse:
+        form = self.form_class(request.user)
+        
+        # Get context data
+        context = self.get_context_data(form=form)
+
+        return render(request, self.template_name, context)
+
+    def post(self, request) -> HttpResponse:
+        form = self.form_class(request.user, request.POST)
         if form.is_valid():
             form.save()
             
             # Flash a message stating that the user's account has 
             # been updated and redirect the user to the settings page
-            messages.success(request, "Your account has been updated.")
-            return redirect("users_settings_account")
-    else:
-        form = PasswordChangeForm(request.user)
-    return render(request, "users/settings/security.html", {"form": form})
+            messages.success(self.request, "Your account has been updated.")
+
+            return super().form_valid(form)
+        else:
+            return super().form_invalid(form)

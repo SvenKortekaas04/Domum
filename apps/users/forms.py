@@ -4,16 +4,11 @@ from django.contrib.auth.forms import UserCreationForm
 
 from apps.users import models
 
-# User settings
-AppearanceSettingsForm = forms.modelform_factory(models.Settings, fields=("theme",))
 
-
-class UserUpdateForm(forms.ModelForm):
-    email = forms.EmailField()
-
+class AppearanceSettingsForm(forms.ModelForm):
     class Meta:
-        model = get_user_model()
-        fields = ["username", "first_name", "last_name", "email"]
+        model = models.Settings
+        fields = ["theme"]
 
 
 class UserRegisterForm(UserCreationForm):
@@ -22,3 +17,11 @@ class UserRegisterForm(UserCreationForm):
     class Meta:
         model = get_user_model()
         fields = ["username", "first_name", "last_name", "email", "password1", "password2"]
+
+
+class UserUpdateForm(forms.ModelForm):
+    email = forms.EmailField()
+
+    class Meta:
+        model = get_user_model()
+        fields = ["username", "first_name", "last_name", "email"]
