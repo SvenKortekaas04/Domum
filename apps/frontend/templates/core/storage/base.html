@@ -8,7 +8,7 @@
                 {% if forloop.last %}
                     <li class="breadcrumb-item fs-5 active" aria-current="page">{% if pair.1 == user.storage_id %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ pair.1 }}{% endif %}</li>
                 {% else %}
-                    <li class="breadcrumb-item fs-5"><a class="text-decoration-none text-dark" href="{% url 'core_browse' path=pair.0 %}">{% if pair.1 == user.storage_id %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ pair.1 }}{% endif %}</a></li>
+                    <li class="breadcrumb-item fs-5"><a class="text-decoration-none text-dark" href="{% url 'core_browse' username=request.user.username path=pair.0 %}">{% if pair.1 == user.storage_id %}{{ user.first_name }} {{ user.last_name }}{% else %}{{ pair.1 }}{% endif %}</a></li>
                 {% endif %}
             {% endfor %}
         </ol>

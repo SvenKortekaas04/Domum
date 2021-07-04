@@ -1,7 +1,7 @@
 {% load static %}
 {% load tags %}
 
-{% url 'core_browse' as browse %}
+{% url 'core_browse' username=request.user.username as browse %}
 {% active request browse as active_browse %}
 
 {% url 'core_recent' as recent %}
@@ -41,11 +41,6 @@
             <i class="bi bi-person-circle"></i>
           </button>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton1">
-            <li>
-              <a class="dropdown-item" href="{% url 'users_account' %}">
-                Account
-              </a>
-            </li>
             <li>
               <a class="dropdown-item" href="#">
                 Notifications
@@ -87,7 +82,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link {{ active_browse }} {% if not active_browse %}text-dark{% endif %}" href="{% url 'core_browse' %}">
+            <a class="nav-link {{ active_browse }} {% if not active_browse %}text-dark{% endif %}" href="{% url 'core_browse' username=request.user.username %}">
               <i class="bi bi-folder me-1"></i>
               <span class="d-inline-block">Browse</span>
             </a>
