@@ -60,10 +60,10 @@ def format_file_size(size: int) -> str:
 def format_timestamp(timestamp) -> str:
     """Format a timestamp."""
 
-    time = datetime.fromtimestamp(timestamp)
-    formatted_time = time.strftime('%Y-%m-%d %H:%M')
+    datetime_ = datetime.fromtimestamp(timestamp)
+    formatted_datetime = datetime_.strftime('%Y-%m-%d %H:%M')
 
-    return formatted_time
+    return formatted_datetime
 
 
 def get_files(root: str, user) -> List[Dict[str, str]]:
@@ -75,14 +75,15 @@ def get_files(root: str, user) -> List[Dict[str, str]]:
     path, subdirs, files = next(os.walk(abspath))
 
     for name in files:
-        last_modified_date = format_timestamp(os.path.getmtime(os.path.join(path, name)))
-        size = os.path.getsize(os.path.join(path, name))
-                
+        path_ = os.path.join(path, name)
+        last_modified_date = os.path.getmtime(path_)
+        size = os.path.getsize(path_)
+
         files_.append({
-            "path": os.path.join(path, name),
-            "relative_path": os.path.relpath(os.path.join(path, name), user.storage_path),
             "name": name,
-            "last_modified_date": last_modified_date,
+            "path": path_,
+            "relative_path": os.path.relpath(path_, user.storage_path),
+            "last_modified_date": format_timestamp(last_modified_date),
             "size": format_file_size(size)
         })
 
@@ -98,15 +99,15 @@ def get_subdirs(root: str, user) -> List[Dict[str, str]]:
     path, subdirs, files = next(os.walk(abspath))
 
     for subdir in subdirs:
-        last_modified_date = format_timestamp(os.path.getmtime(os.path.join(path, subdir)))
-        dir_size = os.path.getsize(os.path.join(path, subdir))
+        path_ = os.path.join(path, subdir)
+        last_modified_date = os.path.getmtime(path_)
         
         subdirs_.append({
-            "path": os.path.join(path, subdir),
-            "relative_path": os.path.relpath(os.path.join(path, subdir), user.storage_path),
             "name": subdir,
-            "listdir": [name for name in os.listdir(os.path.join(path, subdir))],
-            "last_modified_date": last_modified_date
+            "path": os.path.join(path, subdir),
+            "relative_path": os.path.relpath(path_, user.storage_path),
+            "listdir": [name for name in os.listdir(path_)],
+            "last_modified_date": format_timestamp(last_modified_date)
         })
 
     return subdirs_
@@ -133,3 +134,31 @@ def paths_from_root_to_path(root: str, end: str) -> List[str]:
             paths.append(os.path.join(*(os.path.normcase(end).split(os.sep)[:i + 1])))
 
     return paths
+
+
+def handle_uploaded_file(user, f, path: str):
+    """
+    Handle uploaded file.
+    """
+
+    with open(os.path.join(user.storage_path, path, f.name), 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+
+
+def create_file(user, path: str, name: str):
+    """
+    Create a new file.
+    """
+
+    if not os.path.exists(os.path.join(user.storage_path, path, name)):
+        with open(os.path.join(user.storage_path, path, name), "a"):
+            pass
+
+
+def create_folder(user, path: str, name: str):
+    """
+    Create a new folder.
+    """
+
+    os.mkdir(os.path.join(user.storage_path, path, name))
